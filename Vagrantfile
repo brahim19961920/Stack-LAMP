@@ -11,7 +11,7 @@ Vagrant.configure("2") do |configuration|
     config.vm.hostname = "machineDb"
     config.vm.network :private_network, ip: "192.168.33.200"
     config.vm.provider "virtualbox" do |vb|
-		vb.memory = "3096"
+		vb.memory = "2048"
 	end
     end
 
@@ -23,7 +23,7 @@ Vagrant.configure("2") do |configuration|
     config.vm.hostname = "machineWeb"
     config.vm.network :private_network, ip: "192.168.33.250"
     config.vm.provider "virtualbox" do |vb|
-		vb.memory = "3096"
+		vb.memory = "2048"
 	end 
     end
 
