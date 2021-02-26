@@ -1,0 +1,19 @@
+---
+- name: insatllation du serveur web
+  hosts: web
+  become: yes
+  become_user: brahim
+  tasks: 
+  
+  - name: installer apache2
+    yum:
+      update_cache: yes
+      name: httpd
+      state: present
+
+  - name: lancer le service httpd
+    service:
+      name: httpd
+      state: started
+
+  
