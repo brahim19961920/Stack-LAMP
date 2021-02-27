@@ -1,4 +1,5 @@
 ---
+root_password: "brahim"
 mysql_user: "admin"
 mysql_password: "secret"
 mysql_dbname: "blog"
