@@ -1,11 +1,10 @@
 ---
 - name: insatllation du serveur web
-  hosts: web
   become: yes
-  become_user: brahim
+  hosts: web
   tasks: 
   
-  - name: installer apache2
+  - name: installer httpd
     yum:
       update_cache: yes
       name: httpd
@@ -15,5 +14,5 @@
     service:
       name: httpd
       state: started
-
+      enabled: yes
   
