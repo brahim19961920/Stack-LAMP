@@ -1,0 +1,27 @@
+---
+- name: installer MySQL, faire les configurations et creer les bases de donnees et les utilisateurs necessaires
+  hosts: bd
+  become: yes
+  tasks:
+  
+  - name: télecharger le repository pour MySQL
+    get_url: 
+      url: https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+      dest: /tmp/mysql80-community-release-el7-3.noarch.rpm
+  
+  - name: ajouter le repository mysql 
+    shell: 
+      cmd: " sudo rpm -Uvh /tmp/mysql80-community-release-el7-3.noarch.rpm"
+    ignore_errors: yes
+
+  - name: installer MySQL
+    yum: 
+      name:
+        - mysql-server
+      update_cache: yes
+
+  - name: start mysqld
+    systemd:
+      name: mysqld
+      state: started
+      enabled: yes 
