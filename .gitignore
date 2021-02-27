@@ -1,3 +1,4 @@
+vars/main.yml
 ansible.cfg
 hosts
 .vagrant/*
