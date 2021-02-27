@@ -1,5 +1,6 @@
 ---
 - name: insatllation du serveur web
+  vars_files: ../vars/main.yml
   become: yes
   hosts: web
   tasks: 
@@ -16,3 +17,35 @@
       state: started
       enabled: yes
   
+  - name: installer php
+    yum: 
+      update_cache: yes
+      name: 
+      - php
+      - php-mysql
+  
+  - name: ajouter la permission w pour le répertoire /var/www/html
+    file:
+      path: /var/www/html
+      mode: '0755'
+      state: directory
+   
+  - name: supprimer le fichier /var/www/html/index
+    file: 
+      name: /var/www/html/index
+      state: absent
+
+  - name: copier le code source de l'application dans le repertoire /var/www/html
+    copy:
+      src: ../app
+      dest: /var/www/html/
+
+  - name: ajouter le fichier de config de la base de donnes php
+    template:
+      src: "../templates/db-config.php.j2"
+      dest: /var/www/html/db-config.php
+
+  - name: restart httpd service
+    service:
+      name: httpd
+      state: started
