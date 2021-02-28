@@ -1,7 +1,0 @@
----
-root_password: "brahim1996!Cannes2021"
-mysql_user: "admin"
-mysql_password: "secret"
-mysql_dbname: "blog"
-db_host: "192.168.32.200"
-webserver_host: "192.168.32.250"

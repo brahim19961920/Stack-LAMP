@@ -2,6 +2,7 @@
 - name: installer MySQL, faire les configurations et creer les bases de donnees et les utilisateurs necessaires
   hosts: bd
   become: yes
+  vars_files: ../vars/main.yml
   tasks:
   
   - name: télecharger le repository pour MySQL
@@ -17,11 +18,28 @@
   - name: installer MySQL
     yum: 
       name:
-        - mysql-server
+        - mysql-community-server
       update_cache: yes
 
   - name: start mysqld
     systemd:
       name: mysqld
       state: started
-      enabled: yes 
+      enabled: yes
+
+  - name: installer MySQL-python pour gerer des utilisateurs et bases de données
+    yum:
+      name:
+      - gcc-c++
+      - MySQL-python 
+      update_cache: yes
+  
+  - name: trouver le mot de passe temporaire du root
+    shell: 
+      cmd: 'cat /var/log/mysqld.log | grep root@localhost:| cut -d : -f 4| cut -d " " -f 2'
+    register: mysql_root_temp_password
+
+  - name: changer le mot de passe du root 
+    shell: mysqladmin -u root --password="{{ mysql_root_temp_password.stdout }}" password "{{ root_password }}"
+    register: mysql_admin_root_password_result
+    failed_when: "'(using password: NO)' in mysql_admin_root_password_result.stderr" 
