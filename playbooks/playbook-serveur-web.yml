@@ -37,7 +37,7 @@
 
   - name: copier le code source de l'application dans le repertoire /var/www/html
     copy:
-      src: ../app
+      src: ../app/
       dest: /var/www/html/
 
   - name: ajouter le fichier de config de la base de donnes php
