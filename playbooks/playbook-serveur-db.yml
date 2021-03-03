@@ -19,6 +19,7 @@
     yum: 
       name:
         - mysql-community-server
+        - mariadb-server
       update_cache: yes
 
   - name: start mysqld
@@ -48,3 +49,30 @@
     template:
       src: ../templates/table.sql.j2
       dest: /tmp/table.sql 
+
+
+  - name:  ajout de la tabl article
+    mysql_db:
+      name: "{{ mysql_dbname }}"
+      state: present
+      login_user: root
+      login_password: '{{ root_password }}'
+      state: import 
+      target: /tmp/table.sql
+
+  - name: "Creation de l'utilsiateur {{ mysql_user }} avec tous les  privileges sur {{ mysql_dbname }}"
+    mysql_user:
+      name: "{{ mysql_user }}"
+      password: "{{ mysql_password }}"
+      priv: "{{ mysql_dbname }}.*:ALL"
+      host: "{{ webserver_host }}"
+      state: present
+      login_user: root
+      login_password: '{{ root_password }}'
+      login_unix_socket:  /var/lib/mysql/mysql.sock
+
+  handlers:
+    - name: Restart mysql
+      service:
+        name: mysql
+        state: restarted
