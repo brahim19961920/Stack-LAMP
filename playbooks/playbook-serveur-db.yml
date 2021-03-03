@@ -1,6 +1,6 @@
 ---
 - name: installer MySQL, faire les configurations et creer les bases de donnees et les utilisateurs necessaires
-  hosts: bd
+  hosts: localhost
   become: yes
   vars_files: ../vars/main.yml
   tasks:
@@ -42,4 +42,9 @@
   - name: changer le mot de passe du root 
     shell: mysqladmin -u root --password="{{ mysql_root_temp_password.stdout }}" password "{{ root_password }}"
     register: mysql_admin_root_password_result
-    failed_when: "'(using password: NO)' in mysql_admin_root_password_result.stderr" 
+    failed_when: "'(using password: NO)' in mysql_admin_root_password_result.stderr"
+
+  - name: copier le fichier template table.sql.j2 dans le répertoire /tmp/
+    template:
+      src: ../templates/table.sql.j2
+      dest: /tmp/table.sql 
