@@ -1,0 +1,17 @@
+J'ai eu un grand probléme pour pouvoir se connecter au serveur MySQL. J'ai eu l'erreur suivante:
+
+
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "unable to connect to database, check login_user and login_password are correct or /root/.my.cnf has the credentials. Exception message: (2059, \"Authentication plugin 'caching_sha2_password' cannot be loaded: /usr/lib64/mysql/plugin/caching_sha2_password.so: Ne peut ouvrir le fichier d'objet partag\\xc3\\xa9: Aucun fichier ou dossier de ce type\")"}
+
+
+La solution était alors de décommenter la ligne suivante du fichier de configuration /etc/my.cnf
+
+default_authentication_plugin=mysql_native_password
+
+ensuite il faut se connecter au serveur et executer la cde suivante:
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'my_root_password_goes_here'
+
+
+Solution manuelle que je vais essayer de la traduire en taches ansible
+
+
